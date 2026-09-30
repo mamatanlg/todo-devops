@@ -2,15 +2,37 @@
 
 import { useState } from "react";
 
+type Task = {
+  text: string;
+  completed: boolean;
+};
+
 export default function Home() {
   const [task, setTask] = useState("");
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const addTask = () => {
     if (task.trim() === "") return;
 
-    setTasks([...tasks, task]);
+    setTasks([
+      ...tasks,
+      {
+        text: task,
+        completed: false,
+      },
+    ]);
+
     setTask("");
+  };
+
+  const toggleTask = (index: number) => {
+    setTasks(
+      tasks.map((item, i) =>
+        i === index
+          ? { ...item, completed: !item.completed }
+          : item
+      )
+    );
   };
 
   return (
@@ -43,7 +65,23 @@ export default function Home() {
               key={index}
               className="mb-2 flex items-center justify-between rounded border p-3"
             >
-              <span>☐ {item}</span>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={item.completed}
+                  onChange={() => toggleTask(index)}
+                />
+
+                <span
+                  className={
+                    item.completed
+                      ? "text-gray-400 line-through"
+                      : "text-gray-800"
+                  }
+                >
+                  {item.text}
+                </span>
+              </label>
 
               <button className="text-red-600">
                 Delete
