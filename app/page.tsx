@@ -35,6 +35,10 @@ export default function Home() {
     );
   };
 
+  const deleteTask = (index: number) => {
+    setTasks(tasks.filter((_, i) => i !== index));
+  };
+
   return (
     <main className="min-h-screen bg-gray-100 p-8">
       <div className="mx-auto max-w-2xl rounded-lg bg-white p-8 shadow">
@@ -83,8 +87,11 @@ export default function Home() {
                 </span>
               </label>
 
-              <button className="text-red-600">
-                Delete
+              <button
+              onClick={() => deleteTask(index)}
+              className="text-red-600"
+              >
+               Delete
               </button>
             </div>
           ))}
